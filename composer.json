@@ -1,0 +1,13 @@
+{
+    "name": "ob-ivan/throttler",
+    "autoload": {
+        "psr-4": {
+            "Ob_Ivan\\Throttler\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "tests\\": "tests/"
+        }
+    }
+}
