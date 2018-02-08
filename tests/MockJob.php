@@ -13,7 +13,7 @@ class MockJob implements JobInterface {
     }
 
     public function next(): bool {
-        return ++$this->currentRun < $this->maxRuns;
+        return $this->currentRun++ < $this->maxRuns;
     }
 
     public function execute() {

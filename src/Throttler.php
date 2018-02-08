@@ -21,7 +21,7 @@ class Throttler {
             if ($this->requestCount >= $this->maxRequests) {
                 usleep(
                     1000000 *
-                    ceil($this->firstRequestTime + $periodSeconds - microtime(true))
+                    ceil($this->firstRequestTime + $this->periodSeconds - microtime(true))
                 );
                 $this->firstRequestTime = null;
                 $this->requestCount = 0;
