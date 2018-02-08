@@ -9,8 +9,21 @@ class ThrottlerTest extends TestCase {
         $periodSeconds = 1;
         $maxRuns = 20;
         $throttler = new Throttler($maxRequests, $periodSeconds);
-        $job = new SpyJob($maxRuns);
+        $job = new MockJob($maxRuns);
         $throttler->run($job);
-        $runs = $job->getRuns();
+        $microTimes = $job->getMicroTimes();
+        for ($i = 0; $i < 10; ++$i) {
+            $diff = $microTimes[$i + $maxRequests] - $microTimes[$i];
+            $this->assertGreaterThan(
+                $periodSeconds,
+                $diff,
+                'Must keep long enough intervals between runs'
+            );
+            $this->assertLessThan(
+                $periodSeconds * 1.5,
+                $diff,
+                'Should not make intervals too long'
+            );
+        }
     }
 }
