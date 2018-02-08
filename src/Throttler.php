@@ -2,27 +2,27 @@
 namespace Ob_Ivan\Throttler;
 
 class Throttler {
-    private $maxRequestsPerMinute;
-    private $getdata;
-    private $apirequest;
+    private $maxRequests;
+    private $periodSeconds;
 
     private $firstRequestTime = null;
     private $requestCount = 0;
 
     public function __construct(
-        int $maxRequestsPerMinute,
-        $getdata,
-        $apirequest
+        int $maxRequests,
+        float $periodSeconds
     ) {
-        $this->maxRequestsPerMinute = $maxRequestsPerMinute;
-        $this->getdata = $getdata;
-        $this->apirequest = $apirequest;
+        $this->maxRequests = $maxRequests;
+        $this->periodSeconds = $periodSeconds;
     }
 
-    public function run() {
-        while ($data = call_user_func($this->getdata)) {
-            if ($this->requestCount >= $this->maxRequestsPerMinute) {
-                sleep(ceil($this->firstRequestTime + 60 - microtime(true)));
+    public function run(JobInterface $job) {
+        while ($job->next()) {
+            if ($this->requestCount >= $this->maxRequests) {
+                usleep(
+                    1000000 *
+                    ceil($this->firstRequestTime + $periodSeconds - microtime(true))
+                );
                 $this->firstRequestTime = null;
                 $this->requestCount = 0;
             }
@@ -30,7 +30,7 @@ class Throttler {
                 $this->firstRequestTime = microtime(true);
             }
             ++$this->requestCount;
-            call_user_func($this->apirequest, $data);
+            $job->execute();
         }
     }
 }

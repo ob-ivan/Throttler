@@ -1,6 +1,7 @@
 <?php
 namespace tests;
 
+use Ob_Ivan\Throttler\Throttler;
 use PHPUnit\Framework\TestCase;
 
 class ThrottlerTest extends TestCase {
