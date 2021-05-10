@@ -1,5 +1,6 @@
 {
     "name": "ob-ivan/throttler",
+    "description": "Execute tasks in a loop at limited rate.",
     "autoload": {
         "psr-4": {
             "Ob_Ivan\\Throttler\\": "src/"
